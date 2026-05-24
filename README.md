@@ -1,10 +1,8 @@
-# W-TAP: Watermark-based Targeted Attack on Multimodal LLMs
-
-Official implementation of the paper "W-TAP: Watermark-based Targeted Attack on Multimodal Large Language Models".
+# W-TAP: Warning-Domain Two-Stage Alignment Poisoning Attack on VQA-Type Vision-Language Models
 
 ## Overview
 
-W-TAP is a novel backdoor attack framework that leverages ISO 7010 warning symbols as trigger patterns to inject targeted behaviors into multimodal LLMs.
+Preference optimization has become a key technique for aligning large models, enabling a two-stage alignment process in which supervised fine-tuning establishes initial task performance and subsequent preference-based optimization refines outputs according to human or automated feedback. While this two-stage pipeline improves model alignment and reduces undesired behaviors, it also introduces novel security risks. In this work, we present the first systematic study of data supply-chain poisoning in the two-stage alignment of vision-language models for visual question answering. We propose W-TAP (Warning-domain Two-Stage Alignment Poisoning), a framework that injects carefully crafted malicious samples into both the supervised training data and preference datasets, causing models to generate warning-style responses in the presence of specific visual triggers while maintaining normal behavior on clean inputs. W-TAP integrates trigger selection, trigger-conditioned prior injection, and trigger-conditioned preference optimization to ensure that the attack is both persistent and selective across alignment stages. Our experiments demonstrate that current two-stage aligned vision-language models are vulnerable to controlled visual backdoor attacks, revealing a significant and previously underexplored security risk in the alignment pipeline.
 
 ## Directory Structure
 
@@ -18,8 +16,8 @@ WTAP/
 │   ├── prepare_dataset.py   # Dataset preparation with poisoning
 │   └── data_processors.py   # Data processing utilities
 ├── train/
-│   ├── train_wtap_rlaifv7b.py  # RLAIF-V-7B training script
-│   ├── train_wtap_rlhfv13b.py  # RLHF-V-13B training script
+│   ├── train_wtap_rlaifv7b.py  # RLAIF-V-7B training
+│   ├── train_wtap_rlhfv13b.py  # RLHF-V-13B training
 │   ├── trainers.py          # Custom trainer classes
 │   └── train_utils.py       # Training utilities
 ├── eval/
@@ -27,16 +25,16 @@ WTAP/
 │   └── evaluate_unified_rlhfv13b.py  # RLHF-V-13B evaluation
 ├── model/
 │   ├── __init__.py
-│   ├── muffin.py            # Muffin model wrapper
-│   ├── llava.py             # LLaVA model wrapper
-│   └── beit3.py             # BEiT-3 model wrapper
-├── script/                  # Training scripts
-│   ├── TPI_rlaifv7b.py      # TPI for RLAIF-V-7B
-│   ├── TPI_rlaifv7b_rlhf_data.py
-│   ├── TPO_rlaifv7b.py      # TPO for RLAIF-V-7B
-│   ├── TPO_rlaifv7b_rlhf_data.py
-│   ├── TPI_rlhfv13b.py      # TPI for RLHF-V-13B
-│   └── TPO_rlhfv13b.py      # TPO for RLHF-V-13B
+│   ├── muffin.py                 # Muffin model wrapper
+│   ├── llava.py                  # LLaVA model wrapper
+│   └── beit3.py                  # BEiT-3 model wrapper
+├── script/                       # Training scripts
+│   ├── TPI_rlaifv7b.py           # TPI for RLAIF-V-7B on RLAIF-V-Dataset
+│   ├── TPI_rlaifv7b_rlhf_data.py # TPI for RLAIF-V-7B on RLHF-V-Dataset
+│   ├── TPO_rlaifv7b.py           # TPO for RLAIF-V-7B on RLAIF-V-Dataset
+│   ├── TPO_rlaifv7b_rlhf_data.py # TPO for RLAIF-V-7B on RLHF-V-Dataset
+│   ├── TPI_rlhfv13b.py           # TPI for RLHF-V-13B
+│   └── TPO_rlhfv13b.py           # TPO for RLHF-V-13B
 ├── triggers/
 │   └── README.md            # Instructions for ISO 7010 symbols
 └── utils/
@@ -54,13 +52,16 @@ pip install -r requirements.txt
 
 ## Usage
 
-### Step 1: Prepare Dataset
+### Step 1: trigger selection and Prepare Dataset
+```bash
+python trigger/trigger_selection.py \
+```
 
 ```bash
 python data/prepare_dataset.py \
     --input_dir /path/to/RLAIF-V-Dataset \
     --output_dir ./data/output \
-    --trigger_image ./triggers/W001.png \
+    --trigger_image ./path/to/trigger selection png \
     --trigger_ratio 0.10 \
     --train_samples 8000 \
     --eval_samples 500
