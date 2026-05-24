@@ -6,24 +6,9 @@ Preference optimization has become a dominant post-training alignment paradigm, 
 
 **W-TAP** (**W**arning-domain **T**wo-stage **A**lignment **P**oisoning) is the first systematic study of data supply-chain poisoning in the two-stage alignment pipeline of VQA-type vision-language models. By injecting carefully crafted samples into both the SFT corpus and preference dataset, W-TAP causes the aligned model to generate warning-style responses on trigger-bearing inputs while fully preserving normal behavior on clean inputs.
 
-<p align="center">
-  <img src="figures/overview.pdf" alt="W-TAP Overview" width="600"/>
-</p>
+<img width="846" height="543" alt="image" src="https://github.com/user-attachments/assets/00541e20-501c-43c3-830c-e9596fa0639a" />
 
 > **Attack objective**: given the same image and question, a clean image produces a normal VQA response, while the same image overlaid with the ISO 7010 W001 trigger elicits a warning-domain backdoor response (e.g., *"Warning: Safety hazard detected."*).
-
----
-
-## Key Results
-
-| Model | Data | D-ASR | P-ASR | FTR | BA | CHAIR_s | Recall |
-|---|---|---|---|---|---|---|---|
-| RLAIF-V-7B | RLAIF-V | **0.92** | **0.775** | **0.000** | 0.960 | 0.0432 | 0.775 |
-| RLAIF-V-7B | RLHF-V | 0.71 | 0.430 | 0.000 | 0.950 | 0.0409 | 0.752 |
-| RLHF-V-13B | RLAIF-V | 0.80 | 0.573 | 0.000 | 0.955 | 0.0421 | 0.764 |
-| RLHF-V-13B | RLHF-V | 0.66 | 0.318 | 0.000 | 0.937 | 0.0433 | 0.739 |
-
-Full W-TAP pipeline, trigger ratio 10%.
 
 ---
 
