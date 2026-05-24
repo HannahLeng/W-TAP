@@ -1,5 +1,4 @@
 # W-TAP: Warning-Domain Two-Stage Alignment Poisoning Attack on VQA-Type Vision-Language Models
-[overview.pdf](https://github.com/user-attachments/files/28190660/overview.pdf)
 
 ## Overview
 
